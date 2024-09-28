@@ -1,4 +1,5 @@
-import puppeteer from 'puppeteer';
+const chromium = require('chrome-aws-lambda');
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export default async function handler(req, res) {
@@ -10,7 +11,20 @@ export default async function handler(req, res) {
     }
 
     try {
-      const browser = await puppeteer.launch({ headless: true });
+      // const browser = await puppeteer.launch({ 
+      //   headless: true, 
+      //   args: ['--no-sandbox', '--disable-setuid-sandbox'], 
+      // });
+
+      const browser = await chromium.puppeteer.launch({
+        ignoreDefaultArgs: ['--disable-extensions'],
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        headless: chromium.headless,
+        ignoreHTTPSErrors: true,
+      });
+
       const page = await browser.newPage();
 
       for (const email of emails) {
