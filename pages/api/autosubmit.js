@@ -1,7 +1,16 @@
-const chromium = require('chrome-aws-lambda');
+const puppeteer = require("puppeteer-core");
+const chromium = require("@sparticuz/chromium");
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+chromium.setHeadlessMode = true;
 
+// Optional: If you'd like to disable webgl, true is the default.
+chromium.setGraphicsMode = false;
+
+// Optional: Load any fonts you need. Open Sans is included by default in AWS Lambda instances
+await chromium.font(
+  "https://raw.githack.com/googlei18n/noto-emoji/master/fonts/NotoColorEmoji.ttf"
+);
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     const { formUrl, emails } = req.body;
@@ -16,13 +25,11 @@ export default async function handler(req, res) {
       //   args: ['--no-sandbox', '--disable-setuid-sandbox'], 
       // });
 
-      const browser = await chromium.puppeteer.launch({
-        ignoreDefaultArgs: ['--disable-extensions'],
+      const browser = await puppeteer.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath,
+        executablePath: await chromium.executablePath(),
         headless: chromium.headless,
-        ignoreHTTPSErrors: true,
       });
 
       const page = await browser.newPage();
