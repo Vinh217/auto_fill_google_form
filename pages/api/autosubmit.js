@@ -29,7 +29,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ message: 'Forms submitted successfully' });
     } catch (error) {
       console.error('Error submitting form:', error);
-      return res.status(500).json({ message: 'Error submitting form' });
+      return res.status(500).json({ message: error });
     }
   } else {
     res.setHeader('Allow', ['POST']);
