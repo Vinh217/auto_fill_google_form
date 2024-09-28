@@ -1,4 +1,4 @@
-const puppeteer = require("puppeteer-core");
+const puppeteer = require("puppeteer");
 const chromium = require("@sparticuz/chromium");
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -20,19 +20,19 @@ export default async function handler(req, res) {
     }
 
     try {
-      // const browser = await puppeteer.launch({ 
-      //   headless: true, 
-      //   args: ['--no-sandbox', '--disable-setuid-sandbox'], 
-      // });
-
-      const browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(
-          "https://www.example.com/chromiumPack.tar"
-        ),
-        headless: chromium.headless,
+      const browser = await puppeteer.launch({ 
+        args: ["--use-gl=angle", "--use-angle=swiftshader", "--single-process", "--no-sandbox"],
+        headless: true, 
       });
+
+      // const browser = await puppeteer.launch({
+      //   args: chromium.args,
+      //   defaultViewport: chromium.defaultViewport,
+      //   executablePath: await chromium.executablePath(
+      //     "https://www.example.com/chromiumPack.tar"
+      //   ),
+      //   headless: chromium.headless,
+      // });
 
       const page = await browser.newPage();
 

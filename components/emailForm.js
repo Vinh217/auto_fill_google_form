@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const EmailForm = () => {
   const [ emails, setEmails ] = useState('');
@@ -6,6 +6,12 @@ const EmailForm = () => {
   const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
   const [ statusMessages, setStatusMessages ] = useState([]);
+
+  const count3TimesRef = useRef(0);
+  const countMoreThan3TimesRef = useRef(0);
+  const op4Ref = useRef(0);
+  const op5Ref = useRef(0);
+
 
   const ages = [ '18', '19', '20', '21' ];
   const optitons2SingleChoice = [ '1回 (Một lần)', '2回 (Hai lần)', '3回 (Ba lần)', 'それ以上 (Hơn ba lần)' ];
@@ -18,6 +24,39 @@ const EmailForm = () => {
   const options9MultiChoice = [ '学習集中力が低下する (Giảm khả năng tập trung học tập)', '疲労感やエネルギー不足を感じる (Cảm thấy mệt mỏi hoặc thiếu năng lượng)', '食事の準備や外出の時間が減る (Thời gian chuẩn bị bữa ăn hoặc ra ngoài giảm)', '健康問題のために医療機関を訪れる頻度が増す (Tăng tần suất thăm khám y tế do vấn đề sức khỏe)' ];
   const options10SingleChoice = [ 'はい、ファーストフードの食事の量を減らすよう努めています (Có, tôi cố gắng ăn ít thức ăn nhanh hơn)', 'はい、ファーストフードを健康的な選択肢に置き換えています (Có, tôi thay thế thức ăn nhanh bằng các lựa chọn lành mạnh hơn)', 'いいえ、対策はしていません (Không, tôi không thực hiện biện pháp nào)', 'いいえ、しかし対策を考えています (Không, nhưng tôi đang cân nhắc các biện pháp)' ];
   const options11SingleChoice = [ 'はい (Có)', 'いいえ (Không)', 'わからない (Không chắc chắn)' ];
+
+
+  const chooseOption2 = () => {
+    if (count3TimesRef.current < 14) {
+      console.log('count3TimesRef.current :>> ', count3TimesRef.current);
+      count3TimesRef.current += 1; // Increment the ref directly
+      return '3回 (Ba lần)';
+    } else if (countMoreThan3TimesRef.current < 15) {
+      console.log('countMoreThan3TimesRef.current :>> ', countMoreThan3TimesRef.current);
+      countMoreThan3TimesRef.current += 1; // Increment the ref directly
+      return 'それ以上 (Hơn ba lần)';
+    } else {
+      return ['1回 (Một lần)', '2回 (Hai lần)'][Math.floor(Math.random() * 2)];
+    }
+  };
+
+  const chooseOption4 = () => {
+    if (op4Ref.current < 25) {
+      op4Ref.current += 1;
+      return '安いです（rẻ）';
+    } else {
+      return '高いです (đắt）';
+    }
+  };
+
+  const chooseOption5 = () => {
+    if (op5Ref.current < 20) {
+       op5Ref.current += 1;
+       return '歩道の店 (quán bán vỉa hè)';
+    } else {
+      return [ 'a.ファーストフード店 (Nhà hàng đồ ăn nhanh)', 'コンビニエンスストア (Cửa hàng tiện lợi)', 'オンラインデリバリーサービス (Các dịch vụ giao hàng trực tuyến)' ][ Math.floor(Math.random() * 2) ];
+    }
+  };
 
   const random = (items) => {
     return items[ Math.floor(Math.random() * items.length) ].toString();
@@ -41,17 +80,19 @@ const EmailForm = () => {
     setStatusMessages([]);
     setLoading(true);
     setError(null);
-
     try {
       for (const email of emailArray) {
         setStatusMessages((prev) => [ ...prev, `Đang gửi: ${email}` ]);
+        const option2Result = chooseOption2(); 
+        const option4Result = chooseOption4(); 
+        const option5Result = chooseOption5(); 
 
         const params = {
           'usp': 'pp_url',
           'entry.102390596': random(ages),
-          'entry.243897242': random(optitons2SingleChoice),
-          'entry.2109520814': random(options4SingleChoice),
-          'entry.2005404386': random(options5SingleChoice),
+          'entry.243897242': option2Result,
+          'entry.2109520814': option4Result,
+          'entry.2005404386': option5Result,
           'entry.1967827615': random(options6SingleChoice),
           'entry.1774373437': random(options8SingleChoice),
           'entry.526382010': random(options10SingleChoice),
@@ -77,7 +118,7 @@ const EmailForm = () => {
         for (const item of randomsO9) {
           queryString.append('entry.1673567450', item);
         }
-        
+
         const fullUrl = `${formLink}?${queryString.toString()}`;
 
         const response = await fetch('/api/autosubmit', {
