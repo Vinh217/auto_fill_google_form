@@ -2,73 +2,215 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const EmailForm = () => {
   const [ emails, setEmails ] = useState('');
-  const [ formLink, setFormLink ] = useState('https://docs.google.com/forms/d/1Ix-YJnvXVuGM80B7fVAAapSfXp-lg7jHWxkF_AsB3pg/viewform');
+  const [ formLink, setFormLink ] = useState('https://docs.google.com/forms/d/1r6ncMDLIyMceCke696_EnH4Sf3xtFIElad3rUxF8t4o/viewform');
   const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
   const [ statusMessages, setStatusMessages ] = useState([]);
 
+  const op1Ref  = useRef(0);
   const count3TimesRef = useRef(0);
   const countMoreThan3TimesRef = useRef(0);
   const op4Ref = useRef(0);
-  const op5Ref = useRef(0);
+  const op6Ref = useRef(0);
+  const op7Ref = useRef(0);
+  const op8Ref = useRef(0);
+  const op9Ref = useRef(0);
+  const op11Ref = useRef(0);
+
+  const optitons1SingleChoice = [ '1年生 ( sinh viên năm 1)', '2年生 ( sinh viên năm 2)', '4年生 ( sinh viên năm 4)', '4年以上 ( sinh viên năm 4+)' ];
+  const optitons2SingleChoice = [ '0回 (0 lần)', '1〜2回 (1-2 lần)', '3〜4回 (3-4 lần)', '5回以上 (5 lần trở lên)' ];
+  const options3MultiChoice = [ '朝 (Buổi sáng)', '昼 (Buổi trưa)', '夜 (Buổi tối)', '深夜 (Đêm muộn)' ];
+  const options4SingleChoice = [ '変化なし (Không thay đổi)', 'はい、体重が増えた (Có, tăng cân)', 'はい、体重が減った (Có, giảm cân)' ];
+  const options5MultiChoice = [ '問題なし (Không có vấn đề gì)', 'ニキビができる (Nổi mụn)', '脂性肌 (Da dầu)', '乾燥肌 (Khô da)' ];
+  const options6SingleChoice = [ '問題なし (Không gặp vấn đề)', '時々腹が張る (Thỉnh thoảng đầy bụng)', '頻繁に腹が張る、消化不良 (Thường xuyên đầy bụng, khó tiêu)'];
+  const options7MultiChoice = [ '変化なし (Không có thay đổi)', 'はい、時々疲れる (Có, thỉnh thoảng mệt mỏi)', 'はい、頻繁に疲れる (Có, thường xuyên mệt mỏi)', 'わからない (Không rõ)' ];
+  const options8SingleChoice = [ 'はい、健康が改善された (Có, sức khỏe được cải thiện)', 'はい、しかし違いは感じなかった (Có, nhưng không thấy khác biệt)', '試したことがない (Chưa thử giảm số lần ăn mì)' ];
+  const options9MultiChoice = [ '便利 (Tiện lợi)', '安価 (Giá rẻ)', '習慣 (Thói quen)', '美味しい (Vị ngon)' ];
+  const options10MultiChoice = [ '追加しない (Không kết hợp thêm)', '野菜 (Rau xanh)', '卵 (Trứng)', '肉/魚 (Thịt/cá)' ];
+  const options11SingleChoice = [ 'はい、リスクをよく理解している (Có, tôi hiểu rõ các nguy cơ)', 'はい、しかしあまり気にしない (Có, nhưng không quá quan tâm)', 'いいえ、インスタントラーメンを頻繁に食べることに健康リスクはないと思う (Không, tôi không nghĩ ăn mì gói thường xuyên có nguy cơ sức khỏe)' ];
 
 
-  const ages = [ '18', '19', '20', '21' ];
-  const optitons2SingleChoice = [ '1回 (Một lần)', '2回 (Hai lần)', '3回 (Ba lần)', 'それ以上 (Hơn ba lần)' ];
-  const options3MultiChoice = [ 'ハンバーガー (Hamburger)', 'パン (bánh mì)', 'フライドチキン (Gà rán)', 'フライドポテト (Khoai tây chiên)' ];
-  const options4SingleChoice = [ '安いです（rẻ）', '高いです (đắt）' ];
-  const options5SingleChoice = [ 'a.ファーストフード店 (Nhà hàng đồ ăn nhanh)', 'コンビニエンスストア (Cửa hàng tiện lợi)', 'オンラインデリバリーサービス (Các dịch vụ giao hàng trực tuyến)', '歩道の店 (quán bán vỉa hè)' ];
-  const options6SingleChoice = [ 'はい (Có)', 'いいえ (Không)', 'わからない (Không chắc chắn)' ];
-  const options7MultiChoice = [ '体重増加 (Tăng cân)', '消化の問題（例：胃痛、便秘）(Vấn đề tiêu hóa (như đau dạ dày, táo bón))', '疲労感、倦怠感 (Mệt mỏi, uể oải)', '皮膚の問題（例：ニキビ）(Vấn đề về da (như mụn))' ];
-  const options8SingleChoice = [ 'はい (Có)', 'いいえ (Không)', 'わからない (Không chắc chắn)' ];
-  const options9MultiChoice = [ '学習集中力が低下する (Giảm khả năng tập trung học tập)', '疲労感やエネルギー不足を感じる (Cảm thấy mệt mỏi hoặc thiếu năng lượng)', '食事の準備や外出の時間が減る (Thời gian chuẩn bị bữa ăn hoặc ra ngoài giảm)', '健康問題のために医療機関を訪れる頻度が増す (Tăng tần suất thăm khám y tế do vấn đề sức khỏe)' ];
-  const options10SingleChoice = [ 'はい、ファーストフードの食事の量を減らすよう努めています (Có, tôi cố gắng ăn ít thức ăn nhanh hơn)', 'はい、ファーストフードを健康的な選択肢に置き換えています (Có, tôi thay thế thức ăn nhanh bằng các lựa chọn lành mạnh hơn)', 'いいえ、対策はしていません (Không, tôi không thực hiện biện pháp nào)', 'いいえ、しかし対策を考えています (Không, nhưng tôi đang cân nhắc các biện pháp)' ];
-  const options11SingleChoice = [ 'はい (Có)', 'いいえ (Không)', 'わからない (Không chắc chắn)' ];
-
+  const chooseOption1  = () => {
+    if(op1Ref.current < 25) {
+      op1Ref.current += 1;
+      return '3年生 ( sinh viên năm 3)'
+    } else {
+      return random(optitons1SingleChoice);
+    }
+  }
 
   const chooseOption2 = () => {
     if (count3TimesRef.current < 14) {
-      console.log('count3TimesRef.current :>> ', count3TimesRef.current);
-      count3TimesRef.current += 1; // Increment the ref directly
-      return '3回 (Ba lần)';
+      count3TimesRef.current += 1;
+      return '3〜4回 (3-4 lần)';
     } else if (countMoreThan3TimesRef.current < 15) {
-      console.log('countMoreThan3TimesRef.current :>> ', countMoreThan3TimesRef.current);
-      countMoreThan3TimesRef.current += 1; // Increment the ref directly
-      return 'それ以上 (Hơn ba lần)';
+      countMoreThan3TimesRef.current += 1;
+      return '5回以上 (5 lần trở lên)';
     } else {
-      return ['1回 (Một lần)', '2回 (Hai lần)'][Math.floor(Math.random() * 2)];
+      return ['0回 (0 lần)', '1〜2回 (1-2 lần)'][Math.floor(Math.random() * 2)];
     }
   };
 
   const chooseOption4 = () => {
-    if (op4Ref.current < 25) {
+    if (op4Ref.current < 20) {
       op4Ref.current += 1;
-      return '安いです（rẻ）';
+      return 'はい、体重が増えた (Có, tăng cân)';
     } else {
-      return '高いです (đắt）';
+      return random([ '変化なし (Không thay đổi)', 'はい、体重が減った (Có, giảm cân)']);
     }
   };
 
-  const chooseOption5 = () => {
-    if (op5Ref.current < 20) {
-       op5Ref.current += 1;
-       return '歩道の店 (quán bán vỉa hè)';
+  const chooseOption6 = () => {
+    if (op6Ref.current < 20) {
+      op6Ref.current += 1;
+      return '頻繁に腹が張る、消化不良 (Thường xuyên đầy bụng, khó tiêu)';
     } else {
-      return [ 'a.ファーストフード店 (Nhà hàng đồ ăn nhanh)', 'コンビニエンスストア (Cửa hàng tiện lợi)', 'オンラインデリバリーサービス (Các dịch vụ giao hàng trực tuyến)' ][ Math.floor(Math.random() * 2) ];
+      return random( ['問題なし (Không gặp vấn đề)', '時々腹が張る (Thỉnh thoảng đầy bụng)']);
     }
   };
+
+  const chooseOption7 = () => {
+    if (op7Ref.current < 20) {
+      op7Ref.current += 1;
+      return 'はい、時々疲れる (Có, thỉnh thoảng mệt mỏi)';
+    } else {
+      return  random(['変化なし (Không có thay đổi)','はい、頻繁に疲れる (Có, thường xuyên mệt mỏi)', 'わからない (Không rõ)']);
+    }
+  };
+
+  const chooseOption8 = () => {
+    if (op8Ref.current < 19) {
+      op8Ref.current += 1;
+      return 'はい、健康が改善された (Có, sức khỏe được cải thiện)';
+    } else if (op8Ref.current < 32) { 
+      op8Ref.current += 1;
+      return 'はい、しかし違いは感じなかった (Có, nhưng không thấy khác biệt)';
+    } else {
+      return '試したことがない (Chưa thử giảm số lần ăn mì)';
+    }
+  }
+
+  const chooseOption9 = () => {
+    if (op9Ref.current < 4) {
+      op9Ref.current += 1;
+      return '美味しい (Vị ngon)';
+    } else {
+      return random(['安価 (Giá rẻ)', '習慣 (Thói quen)', '便利 (Tiện lợi)']);
+    }
+  }
+
+  const chooseOption11 = () => {
+    if (op11Ref.current < 22) {
+      op11Ref.current += 1;
+      return 'はい、リスクをよく理解している (Có, tôi hiểu rõ các nguy cơ)';
+    } else if (op11Ref.current < 34) {
+      op11Ref.current += 1;
+      return 'はい、しかしあまり気にしない (Có, nhưng không quá quan tâm)';
+    } else {
+      return 'いいえ、インスタントラーメンを頻繁に食べることに健康リスクはないと思う (Không, tôi không nghĩ ăn mì gói thường xuyên có nguy cơ sức khỏe)';
+    }
+  }
 
   const random = (items) => {
     return items[ Math.floor(Math.random() * items.length) ].toString();
   }
 
-  const randomArrayItems = (arr) => {
-    const randomLength = Math.floor(Math.random() * arr.length) + 1;
-    const shuffledArray = arr.sort(() => 0.5 - Math.random());
-    return shuffledArray.slice(0, randomLength);
+  // const randomArrayItems = (arr) => {
+  //   const randomLength = Math.floor(Math.random() * arr.length) + 1;
+  //   const shuffledArray = arr.sort(() => 0.5 - Math.random());
+  //   return shuffledArray.slice(0, randomLength);
+  // }
+
+  const randomArray3Items = (arr) => {
+    let result = [];
+    // Luôn thêm "buổi sáng" và "đêm muộn" với xác suất cao (80%)
+    if (Math.random() < 0.8) {
+      result.push('朝 (Buổi sáng)');
+    }
+    if (Math.random() < 0.8) {
+      result.push('深夜 (Đêm muộn)');
+    }
+    
+    // Thêm các options khác với xác suất thấp hơn (30%)
+    const otherOptions = arr.filter(item => 
+      item !== '朝 (Buổi sáng)' && item !== '深夜 (Đêm muộn)'
+    );
+    
+    otherOptions.forEach(option => {
+      if (Math.random() < 0.3) {
+        result.push(option);
+      }
+    });
+    
+    // Đảm bảo luôn có ít nhất 1 option được chọn
+    if (result.length === 0) {
+      result.push('朝 (Buổi sáng)');
+    }
+    
+    // Xáo trộn mảng kết quả
+    return result.sort(() => 0.5 - Math.random());
   }
 
+  const randomArrayItems5 = () => {
+    let result = [];
+    
+    // Ưu tiên "nổi mụn" với xác suất cao (80%)
+    if (Math.random() < 0.8) {
+      result.push('ニキビができる (Nổi mụn)');
+    }
+    
+    // Thêm các options khác với xác suất thấp hơn (40%)
+    const otherOptions = [
+      '問題なし (Không có vấn đề gì)',
+      '脂性肌 (Da dầu)',
+      '乾燥肌 (Khô da)'
+    ];
+    
+    otherOptions.forEach(option => {
+      if (Math.random() < 0.4) {
+        result.push(option);
+      }
+    });
+    
+    // Đảm bảo luôn có ít nhất 1 option được chọn
+    if (result.length === 0) {
+      result.push('ニキビができる (Nổi mụn)');
+    }
+    
+    return result.sort(() => 0.5 - Math.random());
+  };
 
+  const randomArrayItems10 = () => {
+    let result = [];
+    
+    // Ưu tiên "Rau xanh" và "Trứng" với xác suất cao (75%)
+    if (Math.random() < 0.75) {
+      result.push('野菜 (Rau xanh)');
+    }
+    if (Math.random() < 0.75) {
+      result.push('卵 (Trứng)');
+    }
+    
+    // Thêm các options khác với xác suất thấp hơn (30%)
+    const otherOptions = [
+      '追加しない (Không kết hợp thêm)',
+      '肉/魚 (Thịt/cá)'
+    ];
+    
+    otherOptions.forEach(option => {
+      if (Math.random() < 0.3) {
+        result.push(option);
+      }
+    });
+    
+    // Đảm bảo luôn có ít nhất 1 option được chọn
+    if (result.length === 0) {
+      result.push('野菜 (Rau xanh)');
+    }
+    
+    return result.sort(() => 0.5 - Math.random());
+  };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -83,40 +225,46 @@ const EmailForm = () => {
     try {
       for (const email of emailArray) {
         setStatusMessages((prev) => [ ...prev, `Đang gửi: ${email}` ]);
+        const option1Result = chooseOption1();
         const option2Result = chooseOption2(); 
         const option4Result = chooseOption4(); 
-        const option5Result = chooseOption5(); 
+        const option6Result = chooseOption6(); 
+        const option7Result = chooseOption7(); 
+        const option8Result = chooseOption8(); 
+        const option9Result = chooseOption9(); 
+        const option11Result = chooseOption11(); 
 
         const params = {
           'usp': 'pp_url',
-          'entry.102390596': random(ages),
-          'entry.243897242': option2Result,
-          'entry.2109520814': option4Result,
-          'entry.2005404386': option5Result,
-          'entry.1967827615': random(options6SingleChoice),
-          'entry.1774373437': random(options8SingleChoice),
-          'entry.526382010': random(options10SingleChoice),
-          'entry.1572633572': random(options11SingleChoice)
+          'entry.693744900': option1Result,
+          'entry.699610115': option2Result,
+          // 'entry.614919955': option3Result,
+          'entry.1334952786': option4Result,
+          // 'entry.1532856467': option5Result,
+          'entry.2146839984': option6Result,
+          'entry.2097446406': option7Result,
+          'entry.1233657811': option8Result,
+          'entry.1210688211': option9Result,
+          // 'entry.717035635': random(options10SingleChoice),
+          'entry.607275188': option11Result
         };
 
         const queryString = new URLSearchParams(params);
 
         //options3 
-        const randomsO3 = randomArrayItems(options3MultiChoice);
+        const randomsO3 = randomArray3Items(options3MultiChoice);
         for (const item of randomsO3) {
-          queryString.append('entry.2121376141', item);
+          queryString.append('entry.614919955', item);
         }
 
-        //options 7
-        const randomsO7 = randomArrayItems(options7MultiChoice);
-        for (const item of randomsO7) {
-          queryString.append('entry.860021553', item);
+        const options5Results = randomArrayItems5();
+        for (const item of options5Results) {
+          queryString.append('entry.1532856467', item);
         }
 
-        //options 9
-        const randomsO9 = randomArrayItems(options9MultiChoice);
-        for (const item of randomsO9) {
-          queryString.append('entry.1673567450', item);
+        const options10Results = randomArrayItems10();
+          for (const item of options10Results) {
+            queryString.append('entry.717035635', item);
         }
 
         const fullUrl = `${formLink}?${queryString.toString()}`;

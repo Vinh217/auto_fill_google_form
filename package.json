@@ -3,8 +3,7 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "start": "next start",
-    "postinstall": "bunx @puppeteer/browsers install chrome@stable --path $HOME/.cache/puppeteer"
+    "start": "next start"
   },
   "dependencies": {
     "date-fns": "^2.29.3",
