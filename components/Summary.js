@@ -2703,7 +2703,7 @@ export default function Summary() {
     const [scores, setScores] = useState([]);
     const [total, setTotal] = useState(1);
     const [average, setAverage] = useState(0);
-
+    const [totalGPA, setTotalGPA] = useState(0);
     useEffect(() => {
         (async () => {
             const filterArray = masterData.map(item => {
@@ -2713,11 +2713,11 @@ export default function Summary() {
                     "DiemTK_10": item.DiemTK_10,
                     "IsPass": item.IsPass,
                     "NotComputeAverageScore": item.NotComputeAverageScore,
-                    "TongTC_DK_HK": item.TongTC_DK_HK
+                    "TongTC_DK_HK": item.TongTC_DK_HK,
+                    "DiemTK_4": item.DiemTK_4
                 }
             })
             setScores(filterArray);
-    
             // Calculate average score
             const totalScore = filterArray.reduce((acc, curr) => {
                 if (!curr.NotComputeAverageScore) {
@@ -2725,6 +2725,15 @@ export default function Summary() {
                 }
                 return acc;
             }, 0);
+
+            // Calculate GPA (4.0 scale)
+            const totalGPA = filterArray.reduce((acc, curr) => {
+                if (!curr.NotComputeAverageScore) {
+                    return acc + (parseFloat(curr.DiemTK_4) * parseFloat(curr.Credits));
+                }
+                return acc;
+            }, 0);
+
             const totalCredits = filterArray.reduce((acc, curr) => {
                 if (!curr.NotComputeAverageScore) {
                     return acc + parseFloat(curr.Credits);
@@ -2733,6 +2742,7 @@ export default function Summary() {
             }, 0);
             setTotal(totalCredits);
             setAverage(totalScore / totalCredits);
+            setTotalGPA(totalGPA / totalCredits);
         })()
     }, [])
 
@@ -2740,7 +2750,8 @@ export default function Summary() {
         <div className="p-4 max-w-4xl mx-auto">
             <div className="mb-4">
                 <p>Tổng số tín chỉ: {total}</p>
-                <p>Điểm tổng kết: {average.toFixed(2)}</p>
+                <p>Điểm tổng kết (hệ 10): {average.toFixed(2)}</p>
+                <p>Điểm GPA (hệ 4): {totalGPA.toFixed(2)}</p>
             </div>
             
             <table className="w-full border-collapse border">
@@ -2749,6 +2760,7 @@ export default function Summary() {
                         <th className="border p-2">Tên môn học</th>
                         <th className="border p-2">Số tín chỉ</th>
                         <th className="border p-2">Điểm hệ 10</th>
+                        <th className="border p-2">Điểm hệ 4</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -2757,6 +2769,7 @@ export default function Summary() {
                             <td className="border p-2" dangerouslySetInnerHTML={{__html: score.CurriculumName}} />
                             <td className="border p-2 text-center">{score.Credits}</td>
                             <td className="border p-2 text-center">{score.DiemTK_10}</td>
+                            <td className="border p-2 text-center">{score.DiemTK_4}</td>
                         </tr>
                     ))}
                 </tbody>
