@@ -1,7 +1,46 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 const EmailForm = () => {
-  const [ emails, setEmails ] = useState('');
+  const [ emails, setEmails ] = useState(`truongthuynga13@gmail.com
+sn211299@gmail.com
+phamloi50569@gmail.com
+fuen07052003@gmail.com
+vinhdq0001@gmail.com
+hduc5806@gmail.com
+tamdinh0109@gmail.com
+lanhlv@ominext.com
+doquang0310@gmail.com
+diepntn02@ominext.com
+mentallmc808@gmail.com
+sujikokolija@gmail.com
+mailinh572003@gmail.com
+huyenhuyen113084@gmail.com
+doanthanhdiep333@gmail.com
+honganh6204@gmail.com
+nguyet05092004@gmail.com
+minhnguyen1992@gmail.com
+thuylinh.tran@outlook.com
+anhpham2000@yahoo.com
+tuan.vo1995@hotmail.com
+hoanganh.le1987@gmail.com
+bao.nguyen98@outlook.com
+phamthanh.tran2001@gmail.com
+nguyet.nguyen@ymail.com
+nhatthanh.le1988@hotmail.com
+khangtran91@gmail.com
+hongnhung.pham@yahoo.com
+quang.le1993@outlook.com
+nguyenthao2002@gmail.com
+duyphong.vo@hotmail.com
+yenhoang.le1999@gmail.com
+trunghieu.nguyen95@yahoo.com
+ngocmai.tran2000@gmail.com
+minhthao.le98@outlook.com
+duclinh.pham@gmail.com
+thientam.nguyen1996@yahoo.com
+quynhhoa.le@gmail.com
+hongngoc.vo1997@outlook.com
+vuthanh.tran1995@gmail.com`);
   const [ formLink, setFormLink ] = useState('https://docs.google.com/forms/d/1r6ncMDLIyMceCke696_EnH4Sf3xtFIElad3rUxF8t4o/viewform');
   const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
@@ -29,6 +68,7 @@ const EmailForm = () => {
   const options10MultiChoice = [ '追加しない (Không kết hợp thêm)', '野菜 (Rau xanh)', '卵 (Trứng)', '肉/魚 (Thịt/cá)' ];
   const options11SingleChoice = [ 'はい、リスクをよく理解している (Có, tôi hiểu rõ các nguy cơ)', 'はい、しかしあまり気にしない (Có, nhưng không quá quan tâm)', 'いいえ、インスタントラーメンを頻繁に食べることに健康リスクはないと思う (Không, tôi không nghĩ ăn mì gói thường xuyên có nguy cơ sức khỏe)' ];
 
+  console.log('emails :>> ', emails);
 
   const chooseOption1  = () => {
     if(op1Ref.current < 25) {
@@ -40,19 +80,19 @@ const EmailForm = () => {
   }
 
   const chooseOption2 = () => {
-    if (count3TimesRef.current < 14) {
+    if (count3TimesRef.current < 16) {
       count3TimesRef.current += 1;
       return '3〜4回 (3-4 lần)';
-    } else if (countMoreThan3TimesRef.current < 15) {
+    } else if (countMoreThan3TimesRef.current < 17) {
       countMoreThan3TimesRef.current += 1;
       return '5回以上 (5 lần trở lên)';
     } else {
-      return ['0回 (0 lần)', '1〜2回 (1-2 lần)'][Math.floor(Math.random() * 2)];
+      return '1〜2回 (1-2 lần)';
     }
   };
 
   const chooseOption4 = () => {
-    if (op4Ref.current < 20) {
+    if (op4Ref.current < 22) {
       op4Ref.current += 1;
       return 'はい、体重が増えた (Có, tăng cân)';
     } else {
@@ -61,7 +101,7 @@ const EmailForm = () => {
   };
 
   const chooseOption6 = () => {
-    if (op6Ref.current < 20) {
+    if (op6Ref.current < 23) {
       op6Ref.current += 1;
       return '頻繁に腹が張る、消化不良 (Thường xuyên đầy bụng, khó tiêu)';
     } else {
@@ -70,7 +110,7 @@ const EmailForm = () => {
   };
 
   const chooseOption7 = () => {
-    if (op7Ref.current < 20) {
+    if (op7Ref.current < 21) {
       op7Ref.current += 1;
       return 'はい、時々疲れる (Có, thỉnh thoảng mệt mỏi)';
     } else {
